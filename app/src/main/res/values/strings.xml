@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Twitterbook</string>
+    <string name="login_label">Log in</string>
+    <string name="title_activity_timeline">TimelineActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="please_click_on_login_to_authorize_codepath_tweet_client_to_access_your_tweets">Please Click on Login to Authorize CodePath Tweet client to access your tweets.</string>
+    <string name="compose_tweet_hint">What\'s happening?</string>
+    <string name="tweet">TWEET</string>
+    <string name="media_image_content_desc">media image</string>
+
+</resources>

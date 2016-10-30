@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".activity.LoginActivity" >
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/label"
+        android:layout_margin="@dimen/login_label_margin"
+        android:textSize="18sp"
+        android:gravity="center_horizontal"
+        android:text="@string/please_click_on_login_to_authorize_codepath_tweet_client_to_access_your_tweets"/>
+
+    <Button
+        android:layout_below="@+id/label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/login_button_margin"
+        android:onClick="loginToRest"
+        android:text="@string/login_label" />
+
+</RelativeLayout>

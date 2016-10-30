@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="dbflow-4.0.0-beta1">
+    <ANNOTATIONS>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.Raizlabs.DBFlow/dbflow/4.0.0-beta1/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.Raizlabs.DBFlow/dbflow/4.0.0-beta1/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.Raizlabs.DBFlow/dbflow/4.0.0-beta1/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Raizlabs.DBFlow/dbflow/4.0.0-beta1/978d06fbe9b4f9973fdaea8dfaa954e94299cf7b/dbflow-4.0.0-beta1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

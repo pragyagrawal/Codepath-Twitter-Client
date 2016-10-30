@@ -1,0 +1,89 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.codepath.apps.Twitterbook.fragments.ComposeTweetFragment">>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/composeTweetColor" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/compose_tweet_padding">
+
+        <ImageView
+            android:id="@+id/ivClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/ivUserAvatar"
+            app:srcCompat="@drawable/ic_close_black_24dp" />
+
+        <ImageView
+            android:id="@+id/ivUserAvatar"
+            android:layout_width="@dimen/avtar_size"
+            android:layout_height="@dimen/avtar_size"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/avtar_margin_lrft"
+            app:srcCompat="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/ivUserAvatar"
+            tools:text="name" />
+
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvName"
+            android:layout_toLeftOf="@+id/ivUserAvatar"
+            tools:text="user name" />
+
+
+        <EditText
+            android:id="@+id/etComposeBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/action_divider"
+            android:layout_below="@+id/ivUserAvatar"
+            android:layout_marginTop="@dimen/compose_margin_top"
+            android:background="@android:color/transparent"
+            android:gravity="start"
+            android:hint="@string/compose_tweet_hint" />
+
+        <View
+            android:id="@+id/action_divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_above="@+id/btnTweet"
+            android:layout_marginBottom="@dimen/divider_bottom_margin"
+            android:background="@color/colorDivider" />
+
+        <Button
+            android:id="@+id/btnTweet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/colorPrimary"
+            android:text="@string/tweet"
+            android:textColor="@color/colorIconText" />
+
+        <TextView
+            android:id="@+id/tvCharacterCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/btnTweet"
+            android:layout_margin="@dimen/char_count_margin"
+            android:layout_toLeftOf="@+id/btnTweet"
+            tools:text="140" />
+    </RelativeLayout>
+</LinearLayout>
