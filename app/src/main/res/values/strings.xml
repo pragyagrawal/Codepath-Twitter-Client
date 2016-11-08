@@ -12,5 +12,12 @@
     <string name="tweet">TWEET</string>
     <string name="media_image_content_desc">media image</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="messages">Messages</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="search">Search</string>
+    <string name="user_profile">user profile</string>
+    <string name="direct_message">Direct message</string>
+    <string name="search_result">Search result</string>
 
 </resources>

@@ -3,7 +3,6 @@ package com.codepath.apps.Twitterbook.adapters;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
 import com.codepath.apps.Twitterbook.fragments.TweetsListFragment;
 
@@ -11,7 +10,7 @@ import com.codepath.apps.Twitterbook.fragments.TweetsListFragment;
  * Created by PRAGYA on 11/3/2016.
  */
 
-public class HomePagerAdapter extends FragmentPagerAdapter{
+public class HomePagerAdapter extends SmartFragmentStatePagerAdapter{
     private static int PAGE_COUNT = 2;
 
     private String tabTitles[] = new String[] { "Home", "Mentions"};

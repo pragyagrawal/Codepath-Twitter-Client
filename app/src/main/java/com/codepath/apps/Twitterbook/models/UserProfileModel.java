@@ -15,13 +15,13 @@ public class UserProfileModel implements Parcelable{
 	private String userProfileDescription;
 
 	public UserProfileModel(JSONObject jsonObject) {
-			this.currentUserId = jsonObject.optString("screen_name");
-			this.currentUserName = jsonObject.optString("name");
-			this.currentUserProfile = jsonObject.optString("profile_image_url_https");
-			this.currentUserProfileBackground = jsonObject.optString("profile_banner_url");
-			this.currentUserFollowersCount = jsonObject.optString("followers_count");
-			this.currentUserFollowing = jsonObject.optString("friends_count");
-			this.userProfileDescription = jsonObject.optString("description");
+		this.currentUserId = jsonObject.optString("screen_name");
+		this.currentUserName = jsonObject.optString("name");
+		this.currentUserProfile = jsonObject.optString("profile_image_url_https");
+		this.currentUserProfileBackground = jsonObject.optString("profile_banner_url");
+		this.currentUserFollowersCount = jsonObject.optString("followers_count");
+		this.currentUserFollowing = jsonObject.optString("friends_count");
+		this.userProfileDescription = jsonObject.optString("description");
 	}
 
 	public String getCurrentUserId() {

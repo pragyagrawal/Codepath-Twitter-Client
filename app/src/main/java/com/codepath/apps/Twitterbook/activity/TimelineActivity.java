@@ -1,16 +1,20 @@
 package com.codepath.apps.Twitterbook.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.codepath.apps.Twitterbook.R;
 import com.codepath.apps.Twitterbook.adapters.HomePagerAdapter;
@@ -31,6 +35,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
     Toolbar toolbar;
 
     private UserProfileModel userProfileModel;
+    private HomePagerAdapter homePagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +47,9 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.vpPager);
-        viewPager.setAdapter(new HomePagerAdapter(getSupportFragmentManager(), TimelineActivity.this));
+
+        homePagerAdapter = new HomePagerAdapter(getSupportFragmentManager(), TimelineActivity.this);
+        viewPager.setAdapter(homePagerAdapter);
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -65,7 +72,33 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.timeline_menu,menu);
-        return true;
+
+        MenuItem searchItem = menu.findItem(R.id.search_menu);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView.setSubmitButtonEnabled(true);
+
+        // Customize searchview text and hint colors
+        int searchEditId = android.support.v7.appcompat.R.id.search_src_text;
+        EditText et = (EditText) searchView.findViewById(searchEditId);
+        et.setTextColor(Color.WHITE);
+        et.setHintTextColor(Color.LTGRAY);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String q) {
+                searchTweets(q);
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -75,7 +108,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
             intent.putExtra("user_id", userProfileModel.getCurrentUserId());
             startActivity(intent);
         }else if(item.getItemId() == R.id.messageMenu){
-            Intent intent = new Intent(TimelineActivity.this, FollowListActivity.class);
+            Intent intent = new Intent(TimelineActivity.this, DMListActivity.class);
             intent.putExtra("tag", 2);
             startActivity(intent);
         }
@@ -91,6 +124,13 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
 
     @Override
     public void onTweetSuccess(TweetModel tweetModel) {
+        ((TweetsListFragment)homePagerAdapter.getRegisteredFragment(0)).onTweetSuccess(tweetModel);
+    }
 
+    private void searchTweets(String query)
+    {
+        Intent intent = new Intent(TimelineActivity.this,TweetSearchActivity.class);
+        intent.putExtra("search_query",query);
+        startActivity(intent);
     }
 }

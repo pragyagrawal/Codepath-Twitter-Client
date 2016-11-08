@@ -44,7 +44,7 @@ import cz.msebera.android.httpclient.Header;
  * Use the {@link TweetsListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TweetsListFragment extends Fragment implements ComposeTweetFragment.OnFragmentInteractionListener {
+public class TweetsListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -171,7 +171,7 @@ public class TweetsListFragment extends Fragment implements ComposeTweetFragment
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 pageNo++;
-                loadTweets(pageNo,"pranayairan", false);
+                loadTweets(pageNo,screenName, false);
             }
         };
 
@@ -217,6 +217,10 @@ public class TweetsListFragment extends Fragment implements ComposeTweetFragment
                 case 4:
                     loadFavoriteTweets(page, screenName, isfirstLoad);
                     break;
+
+                case 5:
+                    loadSearchedTweets(screenName,page, isfirstLoad);
+                    break;
             }
         } else {
             Snackbar.make(rvTimeline, "Please check internet connection", Snackbar.LENGTH_SHORT).show();
@@ -225,13 +229,6 @@ public class TweetsListFragment extends Fragment implements ComposeTweetFragment
             swipeContainer.setRefreshing(false);
         }
 
-    }
-
-    @Override
-    public void onTweetSuccess(TweetModel tweetModel) {
-        timelineAdapter.addTweetAtStart(tweetModel);
-        timelineAdapter.notifyDataSetChanged();
-        rvTimeline.scrollToPosition(0);
     }
 
     private List<TweetModel> getOffLineTweets() {
@@ -243,6 +240,31 @@ public class TweetsListFragment extends Fragment implements ComposeTweetFragment
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 tweets = TweetModel.fromJson(json);
+                if (isfirstLoad) {
+                    timelineAdapter.setTweetsList(tweets);
+                } else {
+                    timelineAdapter.addAll(tweets);
+                }
+                swipeContainer.setRefreshing(false);
+                timelineAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                if (statusCode == 429) {
+                    loadTweets(page,"", isfirstLoad);
+                }
+                swipeContainer.setRefreshing(false);
+            }
+        });
+    }
+
+    private void loadSearchedTweets(String query, final int page, final boolean isfirstLoad) {
+        twitterClient.searchTweet(query,page, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
+                tweets = TweetModel.fromJson(json.optJSONArray("statuses"));
                 if (isfirstLoad) {
                     timelineAdapter.setTweetsList(tweets);
                 } else {
@@ -337,5 +359,12 @@ public class TweetsListFragment extends Fragment implements ComposeTweetFragment
                 swipeContainer.setRefreshing(false);
             }
         });
+    }
+
+
+    public void onTweetSuccess(TweetModel tweetModel) {
+        timelineAdapter.addTweetAtStart(tweetModel);
+        timelineAdapter.notifyDataSetChanged();
+        rvTimeline.scrollToPosition(0);
     }
 }

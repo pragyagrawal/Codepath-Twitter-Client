@@ -97,7 +97,7 @@ public class TwitterClient extends OAuthBaseClient {
 
 	//User followers method
 	public void getUsersFollowers(int page, String userId, AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("followers/list.json");
+		String apiUrl = getApiUrl("friends/list.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("next_cursor", String.valueOf(page));
@@ -128,5 +128,27 @@ public class TwitterClient extends OAuthBaseClient {
 		RequestParams params = new RequestParams();
 		params.put("status", body);
 		getClient().post(apiUrl, params, handler);
+	}
+
+	//post re tweets method
+	public void postReTweet(String id, AsyncHttpResponseHandler handler){
+		String uri = "statuses/retweet/"+id+".json";
+		String apiUrl = getApiUrl(uri);
+		getClient().post(apiUrl, handler);
+	}
+
+	//post tweets method
+	public void favoriteTweet(String id, AsyncHttpResponseHandler handler){
+		String uri = "favorites/create.json?id="+id;
+		String apiUrl = getApiUrl(uri);
+		getClient().post(apiUrl, handler);
+	}
+
+	public void searchTweet(String query,int page, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("search/tweets.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("q", query);
+		getClient().get(apiUrl, params, handler);
 	}
 }

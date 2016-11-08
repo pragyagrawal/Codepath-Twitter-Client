@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
-    android:layout_marginTop="4dp">
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp">
 
     <ImageView
         android:id="@+id/ivUserImage"
@@ -26,22 +26,18 @@
         android:id="@+id/tvUserId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvUserName"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="2dp"
-        android:layout_toRightOf="@id/ivUserImage"
+        android:layout_toRightOf="@id/tvUserName"
         tools:text="User id" />
 
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvUserId"
+        android:layout_below="@id/tvUserName"
+        android:layout_toRightOf="@+id/ivUserImage"
+        android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="2dp"
-        android:layout_toRightOf="@id/ivUserImage"
         android:textColor="@color/colorPrimaryText"
-        android:maxLines="3"
-        android:ellipsize="end"
         tools:text="user status" />
 </RelativeLayout>

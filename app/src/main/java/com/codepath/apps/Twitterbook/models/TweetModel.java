@@ -53,6 +53,9 @@ public class TweetModel extends BaseModel {
     @Column
     String mediaImageURL;
 
+    @Column
+    String id_str;
+
     public TweetModel() {
     }
 
@@ -70,6 +73,7 @@ public class TweetModel extends BaseModel {
             this.isRetweeted=object.getBoolean("retweeted");
             this.favoriteCount=object.getInt("favorite_count");
             this.retweetCount=object.getInt("retweet_count");
+            this.id_str = object.getString("id_str");
 
             if(mediaArrayObject!=null && mediaArrayObject.length()>0)
             {
@@ -161,5 +165,13 @@ public class TweetModel extends BaseModel {
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public String getId_str() {
+        return id_str;
+    }
+
+    public void setId_str(String id_str) {
+        this.id_str = id_str;
     }
 }

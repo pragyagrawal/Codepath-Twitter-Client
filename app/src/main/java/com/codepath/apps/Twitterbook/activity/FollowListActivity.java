@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.codepath.apps.Twitterbook.R;
 import com.codepath.apps.Twitterbook.adapters.FollowListAdapter;
@@ -25,20 +26,20 @@ import cz.msebera.android.httpclient.Header;
 
 public class FollowListActivity extends AppCompatActivity {
 
-    private ArrayList<UserProfileModel> userProfileModelList;
-    private FollowListAdapter followListAdapter;
-    private EndlessScrollListener endlessScrollListener;
-    private TwitterClient twitterClient;
-
-    private int nextCursor = 0;
-
-    private String userId;
-    private int tag;
-
+    private static final String USERS = "users";
+    private static final String USER_ID = "user_id";
+    private static final String TAGS = "tag";
     @BindView(R.id.rvFollow)
     RecyclerView rvFollow;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    private ArrayList<UserProfileModel> userProfileModelList;
+    private FollowListAdapter followListAdapter;
+    private EndlessScrollListener endlessScrollListener;
+    private TwitterClient twitterClient;
+    private int nextCursor = 0;
+    private String userId;
+    private int tag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +50,13 @@ public class FollowListActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         twitterClient = new TwitterClient(FollowListActivity.this);
 
         Bundle bundle = getIntent().getExtras();
-        userId = bundle.getString("user_id");
-        tag = bundle.getInt("tag");
+        userId = bundle.getString(USER_ID);
+        tag = bundle.getInt(TAGS);
 
         initializeRecyclerView();
 
@@ -86,33 +89,13 @@ public class FollowListActivity extends AppCompatActivity {
         switch (tag) {
             case 0:
                 loadFollowers(page, screenName, isfirstLoad);
+                getSupportActionBar().setTitle(R.string.followers);
                 break;
             case 1:
                 loadFollowings(page, screenName, isfirstLoad);
-                break;
-            case 2:
-                loadDirectMessages();
+                getSupportActionBar().setTitle(R.string.following);
                 break;
         }
-    }
-
-    private void loadDirectMessages() {
-        twitterClient.getDirectMessageSent(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
-                userProfileModelList = fromJson(json.optJSONArray("users"));
-                followListAdapter.setUserProfileModelList(userProfileModelList);
-                followListAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-                if (statusCode == 429) {
-                    loadDirectMessages();
-                }
-            }
-        });
     }
 
     private void loadFollowers(final int page, final String screenName, final boolean isfirstLoad) {
@@ -142,7 +125,7 @@ public class FollowListActivity extends AppCompatActivity {
         twitterClient.getUsersFollowing(page, screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
-                userProfileModelList = fromJson(json.optJSONArray("users"));
+                userProfileModelList = fromJson(json.optJSONArray(USERS));
                 if (isfirstLoad) {
                     followListAdapter.setUserProfileModelList(userProfileModelList);
                 } else {
@@ -176,5 +159,15 @@ public class FollowListActivity extends AppCompatActivity {
             followers.add(userProfileModel);
         }
         return followers;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
