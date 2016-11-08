@@ -6,8 +6,10 @@ import android.view.Menu;
 import android.view.View;
 
 import com.codepath.apps.Twitterbook.R;
-import com.codepath.apps.Twitterbook.TwitterClient;
+import com.codepath.apps.Twitterbook.network.TwitterClient;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
+
+import butterknife.ButterKnife;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
@@ -15,6 +17,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		ButterKnife.bind(this);
 	}
 
 

@@ -1,160 +1,96 @@
 package com.codepath.apps.Twitterbook.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.codepath.apps.Twitterbook.R;
-import com.codepath.apps.Twitterbook.TwitterApplication;
-import com.codepath.apps.Twitterbook.TwitterClient;
-import com.codepath.apps.Twitterbook.adapters.TimelineRecyclerViewAdapter;
+import com.codepath.apps.Twitterbook.adapters.HomePagerAdapter;
 import com.codepath.apps.Twitterbook.fragments.ComposeTweetFragment;
+import com.codepath.apps.Twitterbook.fragments.TweetsListFragment;
 import com.codepath.apps.Twitterbook.models.TweetModel;
 import com.codepath.apps.Twitterbook.models.UserProfileModel;
-import com.codepath.apps.Twitterbook.utils.DividerItemDecoration;
-import com.codepath.apps.Twitterbook.utils.EndlessScrollListener;
-import com.codepath.apps.Twitterbook.utils.Utils;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class TimelineActivity extends AppCompatActivity implements ComposeTweetFragment.OnFragmentInteractionListener {
+public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.OnFragmentInteractionListener, ComposeTweetFragment.OnFragmentInteractionListener{
 
-    private ArrayList<TweetModel> tweets;
-    private TimelineRecyclerViewAdapter timelineAdapter;
-    private RecyclerView rvTimeline;
-    private EndlessScrollListener endlessScrollListener;
-    private SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
-    private TwitterClient twitterClient;
     private UserProfileModel userProfileModel;
-    private int pageNo = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        tweets = new ArrayList<>();
-        twitterClient = TwitterApplication.getRestClient();
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        ViewPager viewPager = (ViewPager) findViewById(R.id.vpPager);
+        viewPager.setAdapter(new HomePagerAdapter(getSupportFragmentManager(), TimelineActivity.this));
 
-        initializeRecyclerView();
-
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadTweets(0, true);
-            }
-        });
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabCompose);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                ComposeTweetFragment composeTweetFragment = ComposeTweetFragment.newInstance("", userProfileModel);
-                composeTweetFragment.show(fragmentManager, "");
-            }
-        });
-
-        loadUserProfile();
-
-        loadTweets(pageNo, true);
-    }
-
-    private void initializeRecyclerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(TimelineActivity.this);
-        rvTimeline = (RecyclerView) findViewById(R.id.rvTimeline);
-
-        rvTimeline.setLayoutManager(linearLayoutManager);
-        endlessScrollListener = new EndlessScrollListener(linearLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                pageNo++;
-                loadTweets(pageNo, false);
-            }
-        };
-
-        rvTimeline.addOnScrollListener(endlessScrollListener);
-        timelineAdapter = new TimelineRecyclerViewAdapter(tweets, TimelineActivity.this);
-        rvTimeline.setAdapter(timelineAdapter);
-
-        RecyclerView.ItemDecoration itemDecoration = new
-                DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
-        rvTimeline.addItemDecoration(itemDecoration);
-    }
-
-    private void loadUserProfile() {
-        twitterClient.getUsersProfile(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
-                userProfileModel = new UserProfileModel(json);
-                timelineAdapter.setUserProfileModel(userProfileModel);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-        });
-    }
-
-    private void loadTweets(final int page, final boolean isfirstLoad) {
-        if (Utils.isOnline()) {
-            twitterClient.getHomeTimeline(page, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                    tweets = TweetModel.fromJson(json);
-                    if (isfirstLoad) {
-                        timelineAdapter.setTweetsList(tweets);
-                    } else {
-                        timelineAdapter.addAll(tweets);
-                    }
-                    swipeContainer.setRefreshing(false);
-                    timelineAdapter.notifyDataSetChanged();
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    super.onFailure(statusCode, headers, throwable, errorResponse);
-                    if (statusCode == 429) {
-                        loadTweets(page, isfirstLoad);
-                        swipeContainer.setRefreshing(false);
-                    }
-                }
-            });
-        } else {
-            Snackbar.make(rvTimeline,"Please check internet connection",Snackbar.LENGTH_SHORT).show();
-            timelineAdapter.setTweetsList(getOffLineTweets());
-            swipeContainer.setRefreshing(false);
-            timelineAdapter.notifyDataSetChanged();
-        }
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
 
     @Override
-    public void onTweetSuccess(String message) {
-        loadTweets(0, true);
+    public void onUserProfileLoaded(UserProfileModel userProfileModel) {
+        this.userProfileModel = userProfileModel;
     }
 
-    private List<TweetModel> getOffLineTweets() {
-        return SQLite.select().from(TweetModel.class).queryList();
+    @Override
+    public void onTweetListLoadedUpdated(ArrayList<TweetModel> tweetModels) {
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.timeline_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.viewProfileMenu){
+            Intent intent = new Intent(TimelineActivity.this, ProfileActivity.class);
+            intent.putExtra("user_id", userProfileModel.getCurrentUserId());
+            startActivity(intent);
+        }else if(item.getItemId() == R.id.messageMenu){
+            Intent intent = new Intent(TimelineActivity.this, FollowListActivity.class);
+            intent.putExtra("tag", 2);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.fabCompose)
+    public void clickFab(View v){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        ComposeTweetFragment composeTweetFragment = ComposeTweetFragment.newInstance("", userProfileModel);
+        composeTweetFragment.show(fragmentManager, "");
+    }
+
+    @Override
+    public void onTweetSuccess(TweetModel tweetModel) {
+
     }
 }

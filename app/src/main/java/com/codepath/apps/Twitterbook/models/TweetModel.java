@@ -9,6 +9,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
  */
 
 @Table(database = MyDatabase.class)
+@Parcel(analyze={TweetModel.class})   // add Parceler annotation here
 public class TweetModel extends BaseModel {
 
     //Define database columns and associated fields
@@ -139,5 +141,25 @@ public class TweetModel extends BaseModel {
 
     public String getMediaImageURL() {
         return mediaImageURL;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }

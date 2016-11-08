@@ -1,26 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!-- This LinearLayout represents the contents of the screen  -->
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.codepath.apps.Twitterbook.activity.TimelineActivity">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-    </android.support.design.widget.AppBarLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:theme="@style/ToolBarStyle"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+        </android.support.design.widget.AppBarLayout>
+
+        <include layout="@layout/view_pager_layout" />
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabCompose"
@@ -30,18 +36,4 @@
         android:layout_margin="@dimen/fab_margin"
         app:layout_behavior="com.codepath.apps.Twitterbook.utils.ScrollAwareFABBehavior"
         app:srcCompat="@drawable/compose" />
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/timeline_margin"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvTimeline"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-    </android.support.v4.widget.SwipeRefreshLayout>
 </android.support.design.widget.CoordinatorLayout>

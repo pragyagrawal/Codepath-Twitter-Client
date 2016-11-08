@@ -1,6 +1,7 @@
 package com.codepath.apps.Twitterbook.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.Twitterbook.R;
+import com.codepath.apps.Twitterbook.activity.ProfileActivity;
 import com.codepath.apps.Twitterbook.activity.TimelineActivity;
 import com.codepath.apps.Twitterbook.fragments.ComposeTweetFragment;
 import com.codepath.apps.Twitterbook.models.TweetModel;
@@ -91,11 +93,23 @@ public class TimelineRecyclerViewAdapter extends RecyclerView.Adapter<TweetViewH
                 composeTweetFragment.show(fragmentManager, "");
             }
         });
+
+        holder.ivUserImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ProfileActivity.class);
+                intent.putExtra("user_id", tweet.getUserId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return tweetsList.size();
+        if (tweetsList != null) {
+            return tweetsList.size();
+        }
+        return 0;
     }
 
     public void clear() {
@@ -106,6 +120,9 @@ public class TimelineRecyclerViewAdapter extends RecyclerView.Adapter<TweetViewH
         tweetsList.addAll(tweetModelList);
     }
 
+    public void addTweetAtStart(TweetModel tweetModel){
+        tweetsList.add(0,tweetModel);
+    }
     public void setUserProfileModel(UserProfileModel userProfileModel) {
         this.userProfileModel = userProfileModel;
     }

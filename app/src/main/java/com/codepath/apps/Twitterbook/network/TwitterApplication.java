@@ -1,4 +1,4 @@
-package com.codepath.apps.Twitterbook;
+package com.codepath.apps.Twitterbook.network;
 
 import android.app.Application;
 import android.content.Context;

@@ -6,10 +6,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="com.codepath.apps.Twitterbook.TwitterApplication"
+        android:name=".network.TwitterApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -22,7 +22,7 @@
             android:value="1" />
 
         <activity
-            android:name="com.codepath.apps.Twitterbook.activity.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,8 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.SEND"/>
+                <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -41,8 +42,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.codepath.apps.Twitterbook.activity.TimelineActivity"
-            android:label="@string/title_activity_timeline"></activity>
+            android:name=".activity.TimelineActivity"
+            android:label="@string/title_activity_timeline"
+            android:windowSoftInputMode="adjustNothing">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.TweetsDetailActivity"
+            android:label="Tweet" />
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".activity.FollowListActivity"></activity>
     </application>
 
 </manifest>

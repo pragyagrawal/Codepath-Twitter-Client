@@ -3,26 +3,30 @@ package com.codepath.apps.Twitterbook.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.Twitterbook.R;
-import com.codepath.apps.Twitterbook.TwitterApplication;
-import com.codepath.apps.Twitterbook.TwitterClient;
+import com.codepath.apps.Twitterbook.models.TweetModel;
 import com.codepath.apps.Twitterbook.models.UserProfileModel;
+import com.codepath.apps.Twitterbook.network.TwitterApplication;
+import com.codepath.apps.Twitterbook.network.TwitterClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
@@ -43,12 +47,12 @@ public class ComposeTweetFragment extends DialogFragment {
     public static final String USER_ID = "user_id";
     public static final String USER_PROFILE = "user_profile";
 
-    private EditText etComposeTweet;
-    private TextView tvCharacterCount;
-    private TextView tvUserName;
-    private TextView tvUserId;
-    private ImageView ivUserImage;
-    private Toolbar toolbar;
+    @BindView(R.id.etComposeBody) EditText etComposeTweet;
+    @BindView(R.id.tvReplyTo) TextView tvReplyTo;
+    @BindView(R.id.tvCharacterCount) TextView tvCharacterCount;
+    @BindView(R.id.tvUsername) TextView tvUserName;
+    @BindView(R.id.tvName) TextView tvUserId;
+    @BindView(R.id.ivUserAvatar) ImageView ivUserImage;
 
     private TwitterClient twitterClient;
 
@@ -86,23 +90,22 @@ public class ComposeTweetFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_compose_tweet, container, false);
 
+        ButterKnife.bind(this,view);
+
         if (getArguments() != null) {
             userId = getArguments().getString(USER_ID);
             userProfileModel = getArguments().getParcelable(USER_PROFILE);
         }
 
-        toolbar = (Toolbar) (Toolbar) view.findViewById(R.id.toolbar);
-        etComposeTweet = (EditText) view.findViewById(R.id.etComposeBody);
-        tvCharacterCount = (TextView) view.findViewById(R.id.tvCharacterCount);
-        tvUserId = (TextView) view.findViewById(R.id.tvName);
-        tvUserName = (TextView) view.findViewById(R.id.tvUsername);
-        ivUserImage = (ImageView) view.findViewById(R.id.ivUserAvatar);
 
         twitterClient = TwitterApplication.getRestClient();
 
         if(!TextUtils.isEmpty(userId))
         {
             etComposeTweet.setText(userId);
+            tvReplyTo.setVisibility(View.VISIBLE);
+
+            tvReplyTo.setText("In ReplyTo "+userId);
         }
 
         if (userProfileModel != null) {
@@ -122,12 +125,17 @@ public class ComposeTweetFragment extends DialogFragment {
         view.findViewById(R.id.btnTweet).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String tweet = etComposeTweet.getText().toString();
+                final String tweet = etComposeTweet.getText().toString();
                 if (!TextUtils.isEmpty(tweet) && tweet.length() <= 140) {
                     twitterClient.postTweet(tweet, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            mListener.onTweetSuccess("Success");
+                            TweetModel tweetModel = new TweetModel();
+                            tweetModel.setUserId(userProfileModel.getCurrentUserId());
+                            tweetModel.setUserName(userProfileModel.getCurrentUserName());
+                            tweetModel.setProfileImage(userProfileModel.getCurrentUserProfile());
+                            tweetModel.setBody(tweet);
+                            mListener.onTweetSuccess(tweetModel);
                             dismiss();
                         }
 
@@ -141,7 +149,14 @@ public class ComposeTweetFragment extends DialogFragment {
         });
 
         etComposeTweet.addTextChangedListener(textEditorWatcher);
+
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -161,6 +176,18 @@ public class ComposeTweetFragment extends DialogFragment {
         mListener = null;
     }
 
+    @Override
+    public void onResume() {
+        // Get existing layout params for the window
+        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
+        // Assign window properties to fill the parent
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        params.height = WindowManager.LayoutParams.MATCH_PARENT;
+        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+        // Call super onResume after sizing
+        super.onResume();
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -173,7 +200,7 @@ public class ComposeTweetFragment extends DialogFragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onTweetSuccess(String message);
+        void onTweetSuccess(TweetModel tweetModel);
     }
 
     private final TextWatcher textEditorWatcher = new TextWatcher() {

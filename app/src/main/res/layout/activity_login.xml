@@ -6,7 +6,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activity.LoginActivity" >
+    tools:context=".activity.LoginActivity"
+    android:background="@color/colorPrimary">
 
 
     <TextView
@@ -16,15 +17,18 @@
         android:layout_margin="@dimen/login_label_margin"
         android:textSize="18sp"
         android:gravity="center_horizontal"
+        android:textColor="@color/colorLightPrimary"
         android:text="@string/please_click_on_login_to_authorize_codepath_tweet_client_to_access_your_tweets"/>
 
     <Button
         android:layout_below="@+id/label"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/login_button_margin"
         android:onClick="loginToRest"
+        android:textColor="@color/colorLightPrimary"
+        android:background="@color/colorPrimaryDark"
         android:text="@string/login_label" />
 
 </RelativeLayout>

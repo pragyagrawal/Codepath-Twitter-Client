@@ -5,6 +5,7 @@
     android:id="@+id/activity_timeline"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
@@ -29,6 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/tvName"
+        android:maxLines="1"
         tools:text="\@name" />
 
     <TextView
@@ -41,7 +43,7 @@
         android:layout_toRightOf="@+id/tvUserName"
         android:gravity="end"
         android:maxLines="1"
-        tools:text="7hdfdfd" />
+        tools:text="7h" />
 
     <TextView
         android:id="@+id/tvBody"
