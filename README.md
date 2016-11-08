@@ -47,7 +47,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-[Video walkthrough](https://youtu.be/JZ9cHVNy3y4)
+[Video walkthrough](https://youtu.be/XqWAad1eiE4)
 
 ## Notes
 
