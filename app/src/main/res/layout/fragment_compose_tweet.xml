@@ -18,7 +18,7 @@
         android:id="@+id/tvReplyTo"
         android:visibility="gone"
         tools:visibility="visible"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/margin_16"
         tools:text="Sample text"
         android:drawableLeft="@drawable/ic_arrow_downward_black_24dp" />
 

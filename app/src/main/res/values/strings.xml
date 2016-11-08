@@ -19,5 +19,7 @@
     <string name="user_profile">user profile</string>
     <string name="direct_message">Direct message</string>
     <string name="search_result">Search result</string>
+    <string name="tweet_title">Tweet</string>
+    <string name="reply_hint">reply</string>
 
 </resources>

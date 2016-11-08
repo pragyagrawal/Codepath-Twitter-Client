@@ -13,7 +13,7 @@
     <ImageView
         android:id="@+id/ivCoverImage"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="@dimen/cover_image_height"
         android:scaleType="fitXY"
         android:background="@color/colorPrimary"
         tools:src="@drawable/ic_launcher" />
@@ -29,10 +29,10 @@
 
     <ImageView
         android:id="@+id/ivProfileImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="65dp"
-        android:layout_marginLeft="8dp"
+        android:layout_width="@dimen/user_image_width"
+        android:layout_height="@dimen/user_image_height"
+        android:layout_marginTop="@dimen/user_image_margin_top"
+        android:layout_marginLeft="@dimen/margin_left_8dp"
         tools:src="@drawable/ic_launcher" />
 
     <RelativeLayout
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivProfileImage"
-        android:layout_margin="8dp">
+        android:layout_margin="@dimen/profile_relative_margin">
 
         <TextView
             android:id="@+id/tvName"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimaryText"
             android:textStyle="bold"
-            android:textSize="18sp"
+            android:textSize="@dimen/nam_size_18"
             tools:text="Pragya Agrawal" />
 
         <TextView
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvUserName"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/user_status_margin_top"
             android:autoLink="all"
             android:clickable="true"
             android:textColor="@color/colorPrimaryText"
@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvInfo"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/margin_yop_8"
             android:textColor="@color/colorPrimaryText"
             android:textStyle="bold"
             tools:text="100" />
@@ -84,8 +84,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvInfo"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginLeft="@dimen/margin_left_8dp"
+            android:layout_marginTop="@dimen/margin_left_8dp"
             android:layout_toRightOf="@id/tvCountFollowing"
             android:text="FOLLOWING" />
 
@@ -94,8 +94,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvInfo"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginLeft="@dimen/margin_left_24"
+            android:layout_marginTop="@dimen/margin_left_8dp"
             android:layout_toRightOf="@id/tvFollowing"
             android:textColor="@color/colorPrimaryText"
             android:textStyle="bold"
@@ -106,16 +106,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvInfo"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginLeft="@dimen/margin_left_8dp"
+            android:layout_marginTop="@dimen/margin_left_8dp"
             android:layout_toRightOf="@id/tvCountFollowers"
             android:text="FOLLOWERS" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="@dimen/view_height"
             android:layout_below="@id/tvCountFollowing"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/margin_left_8dp"
             android:background="@color/colorDivider"/>
     </RelativeLayout>
 

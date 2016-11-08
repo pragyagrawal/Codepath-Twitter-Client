@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:title="Tweet"
+        android:title="@string/tweet_title"
         android:titleTextColor="@color/colorIconText"
         app:theme="@style/ToolBarStyle" />
 

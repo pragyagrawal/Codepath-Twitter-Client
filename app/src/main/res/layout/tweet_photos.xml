@@ -10,7 +10,7 @@
 
     <ImageView
         android:id="@+id/ivUserTweetImage"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="@dimen/tweet_photos_width"
+        android:layout_height="@dimen/tweet_photos_width"
         tools:src="@drawable/ic_launcher" />
 </RelativeLayout>
